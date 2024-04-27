@@ -1,18 +1,22 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {
 	errorResponse,
 	successResponse,
-} from "../middlewares/responses.middlewares.js";
+} from "../middlewares/responses.middlewares";
 import { validationResult } from "express-validator";
-import User from "../models/User.js";
+import User from "../models/User";
+import { Request, Response } from "express";
 
-export const login = async (req, res) => {
+export const login = async (req:Request, res: Response) => {
 	try {
 		const user = await User.findOne({ where: { email: req.body.email } });
 
 		if (!user) {
-			return errorResponse(res, `Invalid email or password`, 404);
+			return errorResponse(res, undefined, `Invalid email or password`, 404);
 		}
 
 		const password_valid = bcrypt.compareSync(
@@ -20,21 +24,21 @@ export const login = async (req, res) => {
 			user.password
 		);
 		if (!password_valid)
-			errorResponse(res, "Invalid email or password", 404);
+			errorResponse(res, undefined, "Invalid email or password", 404);
 
-		token = jwt.sign(
+		let token = jwt.sign(
 			{ email: user.email, role: "" },
-			process.env.JWT_SECRET,
+			process.env.JWT_SECRET as string,
 			{ expiresIn: "1h" }
 		);
 		const response = { user, token };
 		successResponse(res, response, "Login successful");
 	} catch (error) {
-		errorResponse(res, "Server error!", 500);
+		errorResponse(res, undefined, "Server error!", 500);
 	}
 };
 
-export const registerUser = async (req, res) => {
+export const registerUser = async (req: Request, res: Response) => {
 	const salt = await bcrypt.genSalt(10);
 	const validationErrors = validationResult(req);
 
@@ -54,14 +58,16 @@ export const registerUser = async (req, res) => {
 
 	try {
 		const created_user = await User.create(newUser);
-		delete created_user.password;
+
+		// @ts-ignore
+		delete created_user?.password;
 		successResponse(
 			res,
 			created_user,
 			`User ${created_user.firstName} created successfully`,
 			201
 		);
-	} catch (error) {
+	} catch (error: any) {
 		errorResponse(res, error, "Server error!", 500);
 	}
 };

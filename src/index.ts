@@ -3,9 +3,9 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
-import userRoutes from "../src/routes/user.routes.js";
-import db from "./config/database.js";
-import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes";
+import db from "./config/database";
+import authRoutes from "./routes/auth.routes";
 
 const app = express();
 
@@ -14,7 +14,7 @@ const apiVersion = "/api/v1";
 
 db.authenticate()
 	.then(() => console.log("Database connected..."))
-	.catch((err) => console.log("Error: " + err));
+	.catch((err: any) => console.log("Error: " + err));
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
