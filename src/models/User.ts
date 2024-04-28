@@ -48,18 +48,21 @@ User.init(
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: 'created_at'
+      field: 'created_at',
+      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: 'updated_at'
+      field: 'updated_at',
+      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
   },
   {
     sequelize: db,
     tableName: "user",
     modelName: "User", // This is optional, Sequelize will use 'User' by default
+    timestamps: true, // Automatically add createdAt and updatedAt fields
   }
 );
 
