@@ -48,12 +48,12 @@ User.init(
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: "created_at",
+      field: 'created_at'
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: "updated_at",
+      field: 'updated_at'
     },
   },
   {

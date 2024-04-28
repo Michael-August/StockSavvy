@@ -9,7 +9,8 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
 		 */
-		return queryInterface.createTable("user", {
+
+		return await queryInterface.createTable("user", {
 			id: {
 				field: "id",
 				allowNull: false,
@@ -34,18 +35,6 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false,
 			},
-			createdAt: {
-				allowNull: false,
-				field: "CreatedAt",
-				type: Sequelize.DATE,
-				defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-			},
-			updatedAt: {
-				allowNull: false,
-				field: "UpdatedAt",
-				type: Sequelize.DATE,
-				defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-			},
 		});
 	},
 
@@ -56,5 +45,6 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.dropTable('users');
 		 */
+		await queryInterface.dropTable("user");
 	},
 };
