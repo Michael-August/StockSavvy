@@ -27,7 +27,7 @@ export const login = async (req:Request, res: Response) => {
 			errorResponse(res, undefined, "Invalid email or password", 404);
 
 		let token = jwt.sign(
-			{ email: user.email, role: "" },
+			{ email: user.email, role: user.role },
 			process.env.JWT_SECRET as string,
 			{ expiresIn: "1h" }
 		);
@@ -39,7 +39,7 @@ export const login = async (req:Request, res: Response) => {
 };
 
 export const registerUser = async (req: Request, res: Response) => {
-	const salt = await bcrypt.genSalt(10);
+	// const salt = await bcrypt.genSalt(10);
 	const validationErrors = validationResult(req);
 
 	if (validationErrors.array().length > 0) {
@@ -53,7 +53,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
 	const newUser = {
 		...req.body,
-		password: bcrypt.hashSync(req.body.password, salt),
+		// password: bcrypt.hashSync(req.body.password, salt),
 	};
 
 	try {

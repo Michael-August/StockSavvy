@@ -6,6 +6,7 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes";
 import db from "./config/database";
 import authRoutes from "./routes/auth.routes";
+import businessRoutes from "./routes/business.routes";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.get(`${apiVersion}/`, (req, res) => {
 app.use(`${apiVersion}`, authRoutes);
 
 app.use(`${apiVersion}/users`, userRoutes);
+app.use(`${apiVersion}/business`, businessRoutes);
 
 app.listen(port, () => {
 	console.log(`server started, listinig on port ${port}`);

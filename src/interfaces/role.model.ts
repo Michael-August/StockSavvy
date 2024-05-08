@@ -1,0 +1,1 @@
+export type IRole = 'ADMIN' | 'DIRECTOR' | 'SECRETARY' | 'OTHERS'

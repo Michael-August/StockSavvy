@@ -1,32 +1,44 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 import db from "../config/database";
+import Business from "./Business";
+import { IRole } from "../interfaces/role.model";
 
-interface UserAttributes {
-  id: number;
+export interface UserAttributes {
+  id: string;
   email: string;
   password: string;
   firstName: string;
   lastName: string;
-  createdAt: Date;
-  updatedAt: Date;
+  phoneNumber: string;
+  role: IRole;
+  verificationToken: string;
+  verified: boolean;
+  businessId: string
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
-  public id!: number;
+  public id!: string;
   public email!: string;
   public password!: string;
   public firstName!: string;
   public lastName!: string;
-  public createdAt!: Date;
-  public updatedAt!: Date;
+  public phoneNumber!: string;
+  public role!: IRole;
+  public verificationToken!: string;
+  public verified!: boolean;
+  public businessId!: string;
+
+  static associate(models: any) {
+    this.belongsTo(models.Business)
+  }
 }
 
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: Sequelize.literal('uuid_generate_v4()::uuid'),
     },
     email: {
       type: DataTypes.STRING,
@@ -35,7 +47,6 @@ User.init(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     firstName: {
       type: DataTypes.STRING,
@@ -45,17 +56,25 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    createdAt: {
-      type: DataTypes.DATE,
+    phoneNumber: {
+      type: DataTypes.STRING,
       allowNull: false,
-      field: 'created_at',
-      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      unique: true
     },
-    updatedAt: {
-      type: DataTypes.DATE,
+    role: {
+      type: DataTypes.STRING,
       allowNull: false,
-      field: 'updated_at',
-      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    },
+    verificationToken: {
+      type: DataTypes.STRING,
+    },
+    verified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    businessId: {
+      type: DataTypes.UUID, // Data type of the foreign key
+      allowNull: false, // Foreign key cannot be null
     },
   },
   {
