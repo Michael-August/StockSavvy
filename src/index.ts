@@ -7,6 +7,7 @@ import userRoutes from "./routes/user.routes";
 import db from "./config/database";
 import authRoutes from "./routes/auth.routes";
 import businessRoutes from "./routes/business.routes";
+import { verifyJWT } from "./middlewares/verifyJWT.middleware";
 
 const app = express();
 
@@ -25,7 +26,9 @@ app.get(`${apiVersion}/`, (req, res) => {
 	res.json({ message: "Welcome to Stock Savvy application." });
 });
 
-app.use(`${apiVersion}`, authRoutes);
+app.use(`${apiVersion}/auth`, authRoutes);
+
+app.use(verifyJWT)
 
 app.use(`${apiVersion}/users`, userRoutes);
 app.use(`${apiVersion}/business`, businessRoutes);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, registerUser } from "../controllers/auth.controller";
+import { login, passwordSetup, registerUser, verifyEmail } from "../controllers/auth.controller";
 import {
 	createUserValidator,
 	loginValidator,
@@ -7,7 +7,10 @@ import {
 
 const authRoutes = Router();
 
-authRoutes.post("/login", loginValidator, login);
+authRoutes.post("/", loginValidator, login);
 authRoutes.post("/register", createUserValidator, registerUser);
+authRoutes.get("/verify-email", verifyEmail);
+authRoutes.post('/setup-password', passwordSetup);
+
 
 export default authRoutes;
