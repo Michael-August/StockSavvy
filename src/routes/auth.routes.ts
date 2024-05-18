@@ -4,11 +4,13 @@ import {
 	createUserValidator,
 	loginValidator,
 } from "../middlewares/user.validators";
+import { authorizeUser } from "../middlewares/authorizeUser";
+import { verifyJWT } from "../middlewares/verifyJWT.middleware";
 
 const authRoutes = Router();
 
 authRoutes.post("/", loginValidator, login);
-authRoutes.post("/register", createUserValidator, registerUser);
+authRoutes.post("/register", verifyJWT, authorizeUser('ADMIN'), createUserValidator, registerUser);
 authRoutes.get("/verify-email", verifyEmail);
 authRoutes.post('/setup-password', passwordSetup);
 

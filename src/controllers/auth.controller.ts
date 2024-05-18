@@ -58,7 +58,9 @@ export const registerUser = async (req: Request, res: Response) => {
 
 	const newUser = {
 		...req.body,
-		verificationToken
+		verificationToken,
+		verified: false,
+		businessId: (req as any).user.businessId
 	};
 
 	try {
