@@ -8,6 +8,7 @@ import db from "./config/database";
 import authRoutes from "./routes/auth.routes";
 import businessRoutes from "./routes/business.routes";
 import { verifyJWT } from "./middlewares/verifyJWT.middleware";
+import productRoutes from "./routes/product.routes";
 
 const app = express();
 
@@ -27,6 +28,8 @@ app.get(`${apiVersion}/`, (req, res) => {
 });
 
 app.use(`${apiVersion}/auth`, authRoutes);
+
+app.use(`${apiVersion}/product`, productRoutes)
 
 app.use(verifyJWT)
 
